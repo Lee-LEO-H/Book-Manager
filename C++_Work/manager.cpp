@@ -21,6 +21,7 @@ struct check_info Manager:: check_Identity()
     struct check_info info;
     info.name="0";
     info.number="0";
+    //查找有无此人
     for(int i=0;i<this->person_count;i++)
     {
         if(this->person_arr[i]->Name==name && this->person_arr[i]->Number==number)
@@ -41,9 +42,10 @@ void Manager::Borrow(){
         return;
     string name;
     string number;
-    // int index[10];
+    //借阅图书
     for(int j=0;j<this->person_count;j++)
     {
+
         if(this->person_arr[j]->Number==identity.number && this->person_arr[j]->Name==identity.name)
         {
             cout<<"请输入要借阅书籍的名字：";
@@ -110,6 +112,7 @@ void Manager::Borrow(){
                                     } 
                                 }
                             }
+                            //修改该人的借阅记录和借阅数量
                             Book * record_book=new Book(*(this->book_arr[i]));
                             record_book->is_Return=false;
                             this->person_arr[j]->borrow_record.push_back(record_book);
@@ -144,6 +147,7 @@ void Manager::Return()
     // int index[10];
     for(int j=0;j<this->person_count;j++)
     {
+        //验证人员信息
         if(this->person_arr[j]->Number==identity.number && this->person_arr[j]->Name==identity.name)
         {
             cout<<"请输入要归还书籍的信息"<<endl;
@@ -153,10 +157,12 @@ void Manager::Return()
             cin>>number;
             for(int i=0;i<this->book_count;i++)
             {
+                //验证图书信息
                 if(this->book_arr[i]->Name==name && this->book_arr[i]->Number==number)
                 {
                     for(int k=0;k<this->person_arr[j]->borrow_record.size();k++)
                     {
+                        //验证借阅记录
                         if(this->person_arr[j]->borrow_record[k]->Name==name &&this->person_arr[j]->borrow_record[k]->Number==number && this->person_arr[j]->borrow_record[k]->is_Return==false)
                         {
                             this->person_arr[j]->return_record.push_back(this->book_arr[i]);
@@ -188,6 +194,7 @@ void Manager::Add_Info()
         cout<<"输入错误,请输入1或2：";
         cin>>choice;
     }
+    //添加人员信息
     if(choice==1)
     {
         Person ** newspace =new Person*[this->person_count+1];
@@ -241,12 +248,13 @@ void Manager::Add_Info()
             cin>>number;
             p=new Administrator(name,number);
         }
-
+        //动态分配存储空间
         newspace[this->person_count]=p;
         this->person_count+=1;
         // delete[] this->person_arr;
         this->person_arr=newspace;
     }
+    //添加图书信息
     else if(choice==2)
     {
         int addNum=0;
@@ -306,6 +314,7 @@ void Manager::Research_Info()
         cout<<"输入错误,请输入1或2或3：";
         cin>>choice;
     }
+    //查询人员信息
     if(choice==1)
     {
         struct check_info identity;
@@ -315,6 +324,7 @@ void Manager::Research_Info()
         else{
             for(int i=0;i<this->person_count;i++)
             {
+                //验证人员信息
                 if(this->person_arr[i]->Number==identity.number && this->person_arr[i]->Name==identity.name)
                 {
                     if(this->person_arr[i]->Id=="student")
@@ -334,6 +344,7 @@ void Manager::Research_Info()
             }
         }
     }
+    //查询图书信息
     else if(choice==2)
     {
         cout<<"--------------------------------------馆内已记录的书籍有以下--------------------------------------"<<endl;
@@ -407,6 +418,7 @@ void Manager::Change_Info()
         cout<<"输入有误，请重新输入:";
         cin>>choice;
     }
+    //修改人员信息
     if(choice==1)
     {
         string name;
@@ -421,6 +433,7 @@ void Manager::Change_Info()
         cin>>number;
         for(int i=0;i<this->person_count;i++)
         {
+            //验证是否存在该人
             if(this->person_arr[i]->Number==number && this->person_arr[i]->Name==name)
             {
                 cout<<"请根据需要进行人员信息修改，需要修改的项则输入对应信息，不需要则输入N\\n(借阅量输入-1)"<<endl;
@@ -483,6 +496,7 @@ void Manager::Change_Info()
         cout<<"查无此人"<<endl;
         return;
     }
+    //修改图书信息
     else
     {   
         struct check_info identity;
@@ -563,7 +577,7 @@ void Manager::Change_Info()
     }
 }
 
-void Manager::Delate_Info()
+void Manager::Delete_Info()
 {
     struct check_info identity;
     cout<<"该权限仅供管理员使用，请输入管理员信息"<<endl;
@@ -572,6 +586,7 @@ void Manager::Delate_Info()
         return;
     for(int i=0;i<this->person_count;i++)
     {
+        //验证是否为管理员
         if(this->person_arr[i]->Number==identity.number && this->person_arr[i]->Name==identity.name &&this->person_arr[i]->Id=="administrator")
         {
             int choice;
@@ -582,6 +597,7 @@ void Manager::Delate_Info()
                 cout<<"输入有误，请重新输入:";
                 cin>>choice;
             }
+            //删除人员信息
             if(choice==1)
             {
                 if(this->person_arr==NULL|| this->person_count==0)
@@ -624,6 +640,7 @@ void Manager::Delate_Info()
                 }
                 return;
             }
+            //删除管理员信息
             else
             {
                 if(this->book_arr==NULL||this->book_count==0)
@@ -676,6 +693,7 @@ void Manager::Delate_Info()
 
 void Manager::Save()
 {
+    //将栈区的数据按一定格式保存在记事本
     ofstream ofs;
     ofs.open(PersonFileName,ios_base::out);
     for(int i=0;i<person_count;i++)
@@ -771,6 +789,7 @@ void Manager::Save()
 
 int Manager::Get_Person_Num()
 {
+    //读取记事本中记录的人员数量
     ifstream ifs;
     ifs.open(PersonFileName,ios::in);
     string Id;
@@ -786,6 +805,7 @@ int Manager::Get_Person_Num()
 }
 int Manager::Get_Book_Num()
 {
+    //读取记事本中记录的图书数量
     ifstream ifs;
     ifs.open(BookFileName,ios::in);
     string ch;
@@ -801,7 +821,7 @@ int Manager::Get_Book_Num()
 }
 void Manager::Init_Person()
 {
-
+    //初始化人员数组
     ifstream ifs;
     ifs.open(PersonFileName,ios::in);
     string id;string name;string number;string academy;string title;int count;int borrow_count;
@@ -880,6 +900,7 @@ void Manager::Init_Person()
 }
 void Manager::Init_Book()
 {
+    //初始化图书数组
     ifstream ifs;
     ifs.open(BookFileName,ios::in);
     string name;string number;string author;string publicer;int price;int count;
@@ -930,6 +951,7 @@ Manager::Manager(/* args */)
         ifs.close();
         return;
     }
+    //文件有数据，读取数据
     int num=this->Get_Person_Num();
     this->person_count=num;
     this->person_arr=new Person*[this->person_count];

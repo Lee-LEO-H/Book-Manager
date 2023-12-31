@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    Manager mg;
+    Manager mg; //实例化对象
 Entrance:
     cout<<"**********  图书管理系统  ***********"<<endl;
     cout<<"********** 1、借阅书籍 **************"<<endl;
@@ -24,24 +24,31 @@ Entrance:
     }
     switch (step)
     {
+    //借阅功能
     case 1:
         mg.Borrow();
         break;
+    //归还功能
     case 2:
         mg.Return();
         break;
+    //添加信息功能
     case 3:
         mg.Add_Info();
         break;
+    //修改信息功能
     case 4:
         mg.Change_Info();
         break;
+    //查询信息功能
     case 5:
         mg.Research_Info();
         break;
+    //删除信息功能
     case 6:
-        mg.Delate_Info();
+        mg.Delete_Info();
         break;
+    //退出系统并保存数据到记事本
     default:
         mg.Save();
         return 0;

@@ -24,7 +24,7 @@ public:
     void Research_Info(void);
     void Change_Info(void);
     void Add_Info(void);
-    void Delate_Info(void);
+    void Delete_Info(void);
     struct check_info check_Identity(void);
     void Save(void);
     void Read(void);
