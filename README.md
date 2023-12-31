@@ -28,7 +28,7 @@ library.cpp ：主函数，只需运行该代码即可；
 
 类的源文件：
 
-    Manager.cpp (主要功能实现)
+    Manager.cpp (主要功能实现) !! 注意运行代码时需修改该文件中的PersonFileName和BookFileName为你实际所保存路径
     
     Person.cpp
     
